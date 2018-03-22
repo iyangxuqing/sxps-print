@@ -47,7 +47,7 @@
 					let trade = trades[i]
 					for (let j in trade.orders) {
 						let order = trade.orders[j]
-						if (order.iid != '0') {
+						if (order.iid) {
 							let index = -1
 							for (let k in ZOrders) {
 								if (ZOrders[k].iid == order.iid && ZOrders[k].sid == order.sid) {
@@ -76,7 +76,7 @@
 					let trade = trades[i]
 					for (let j in trade.orders) {
 						let order = trade.orders[j]
-						if (order.iid == '0') {
+						if (!order.iid) {
 							let name = trade.receive_name
 							let phone = trade.receive_phone || trade.mobileNumber
 							let message = order.message + ' [' + name + ' ' + phone + ']'

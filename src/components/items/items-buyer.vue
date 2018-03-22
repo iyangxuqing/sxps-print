@@ -1,7 +1,7 @@
 <template>
 	<div class="items-wrapper">
 		<div class="items">
-			<div class="item" v-for="item in categoryItems" @tap="itemTap(item)">
+			<div class="item" v-for="item in categoryItems" @click="itemTap(item)">
 				<div class="item-image"><img :src="item.specs[0].image"/></div>
 				<div class="item-title">{{item.specs[0].title}}</div>
 			</div>
@@ -11,14 +11,13 @@
 
 <script type="text/ecmascript-6">
 
-	import BScroll from '@/base/better-scroll/src'
 	import { getItems } from '@/api/items'
 
 	export default {
 		props: {
-			tid: {
-				type: String,
-				default: ''
+			order: {
+				type: Object,
+				default: () => {}
 			}
 		},
 	 	data() {
@@ -45,9 +44,6 @@
 			})
 			getItems({onShelf: 1}).then((items) => {
 				this.items = items
-				setTimeout(() => {
-					this.scroll = new BScroll('.items-wrapper', { tap: true })
-				}, 20)
 			})
 		},
 		watch: {
@@ -75,7 +71,7 @@
 			itemTap(item) {
 				this.$bus.$emit('purchase-show', {
 					tid: this.tid,
-					item: item
+					iid: item.id
 				})
 			}
 		}
@@ -86,24 +82,20 @@
 
 	.items-wrapper
 		position: relative
-		height: 100%
-		overflow: hidden
 		.items
 			display: flex
 			flex-wrap: wrap
 			padding: 15px
 			.item
-				$width = calc((100vw - 60px)/3)
-				width: $width
+				width: calc((100% - 30px)/3)
 				margin-bottom: 5px
-				cursor: pointer
 				position: relative
 				&:nth-of-type(3n+2)
 					margin-left: 15px
 					margin-right: 15px
 				.item-image
 					width: 100%
-					height: $width
+					height: 130px
 					img
 						width: 100%
 						height: 100%
@@ -125,10 +117,4 @@
 					padding: 30px
 					opacity: 0.3
 					border: 1px solid #333
-	.pc 
-		.items
-			.item
-				width: calc((100% - 30px)/3)
-				.item-image
-					height: 104px					
 </style>

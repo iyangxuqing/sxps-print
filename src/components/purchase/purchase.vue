@@ -63,32 +63,25 @@
 			}
 		},
 		created() {
-			this.$bus.$on('purchase-show', (options={}) => {
-				this.tid = options.tid || options.order.tid
-				if (options.item) {
-					this.item = JSON.parse(JSON.stringify(options.item))
-					this.specsIndex = options.item.specs.length > 1 ? 1 : 0
-					this.show = true
-					this._setHeight()
-				}
-				else if (options.order) {
-					this.order = options.order
-					getItems({ onShelf: '1'}).then((items) => {
+			this.$bus.$on('purchase-show', (order) => {
+				this.order = order
+				getItems({ onShelf: '1'}).then((items) => {
+					if (order.iid) {
 						let item = {}
 						let specsIndex = 0
 						for (let i in items) {
-							if (items[i].id == options.order.iid) {
+							if (items[i].id == order.iid) {
 								/* 不污染全局的items */
 								item = JSON.parse(JSON.stringify(items[i]))
 								specsIndex = item.specs.length > 1 ? 1 : 0
 								for (let j in item.specs) {
-									if (item.specs[j].id == options.order.sid) {
+									if (item.specs[j].id == order.sid) {
 										specsIndex = j
 										break
 									}
 								}
-								item.specs[specsIndex].num = options.order.num
-								item.specs[specsIndex].message = options.order.message
+								item.specs[specsIndex].num = order.num
+								item.specs[specsIndex].message = order.message
 								break
 							}
 						}
@@ -98,8 +91,8 @@
 						this.$nextTick(() => {
 							this._setHeight()
 						})					
-					})
-				}
+					}
+				})
 			})
 		},
 		methods: {
@@ -110,24 +103,26 @@
 			},
 			confirm() {
 				let orders = []
-				for (let i in this.item.specs) {
-					if (this.order && this.order.iid == this.item.id && this.order.sid == this.item.specs[i].id) {
-						this.order.num = this.item.specs[i].num
-						this.order.message = this.item.specs[i].message
-						orders.push(this.order)
-					} else if (this.item.specs[i].num > 0) {
+				let item = this.item
+				let order = this.order
+				for (let i in item.specs) {
+					if (order.iid == item.id && order.sid == item.specs[i].id) {
+						order.num = item.specs[i].num
+						order.message = item.specs[i].message
+						orders.push(order)
+					} else if (item.specs[i].num > 0) {
 						orders.push({
 							id: Number(Date.now()) + Number(i) + '',
-							tid: this.tid,
-							iid: this.item.id,
-							sid: this.item.specs[i].id,
-							title: this.item.specs[0].title,
-							specs: i > 0 ? this.item.specs[i].title : '',
-							image: this.item.specs[i].image,
-							descs: this.item.specs[i].descs,
-							price: this.item.specs[i].price,
-							num: this.item.specs[i].num,
-							message: this.item.specs[i].message
+							tid: order.tid,
+							iid: item.id,
+							sid: item.specs[i].id,
+							title: item.specs[0].title,
+							specs: i > 0 ? item.specs[i].title : '',
+							image: item.specs[i].image,
+							descs: item.specs[i].descs,
+							price: item.specs[i].price,
+							num: item.specs[i].num,
+							message: item.specs[i].message
 						})
 					}
 				}

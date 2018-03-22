@@ -19,7 +19,7 @@
 					</div>
 					
 					<div class="trade-orders">
-						<div class="order" v-for="order in trade.orders" @tap="orderTap(order)">
+						<div class="order" v-for="order in trade.orders" @click="orderTap(order)">
 							<div class="order-image"><img :src="order.image"/></div>
 							<div class="order-text">
 								<div class="order-text-title">{{order.title}}<span v-if="order.specs">-{{order.specs}}</span></div>
@@ -35,10 +35,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="order order-add" @tap="orderAddNewTap(trade.id)">
+						<div class="order order-add" @click="orderAddNewTap(trade.id)">
 							<div class="order-add-left"><img src="@/common/image/plus.png"/></div>
 							<div class="order-add-middle">添加新订单</div>
-							<div class="order-add-right" @tap.stop="orderSelectTap(trade.id)"><img src="@/common/image/enter.png"/></div>
+							<div class="order-add-right" @click.stop="orderSelectTap(trade.id)"><img src="@/common/image/enter.png"/></div>
 						</div>
 					</div>
 
@@ -63,7 +63,6 @@
 
 	import Vue from 'vue'
 	import { getTrades, setOrders } from '@/api/trade'
-	import BScroll from '@/base/better-scroll/src'
 
 	export default {
 		name: 'TradeEdit',
@@ -74,6 +73,8 @@
 		},
 		created() {
 			this.$bus.$on('purchase-confirm', (orders) => {
+
+				if (!orders.length) return
 
 				setOrders(orders).then((res) => {
 					console.log(res)
@@ -118,40 +119,32 @@
 				this.trades = trades
 			})			
 		},
-		mounted() {
-			this.scroll = new BScroll('.trades-wrapper', {
-				tap: true
-			})
-		},
 		activated() {
 			this.$bus.$emit('setHeader', {
 				title: '订单',
 				back: false
 			})
-			if (this.scroll) {
-				this.scroll.refresh()
-				this.scroll.scrollTo(0, this.scrollY || 0)
-			}
 		},
 		methods: {
 			orderTap(order) {
-				this.scrollY = this.scroll.y
 				if (order.title) {
-					this.$bus.$emit('purchase-show', {order})
+					this.$router.push({
+						name: 'TradeEdit-GoodsBuyer',
+						params: { order }
+					})
+					// this.$bus.$emit('purchase-show', {order})
 				} else {
 					this.$bus.$emit('purchase-post-show', order)
 				}
 			},
 			orderAddNewTap(tid) {
-				this.scrollY = this.scroll.y
 				this.$bus.$emit('purchase-post-show', {tid})
 			},
 			orderSelectTap(tid) {
-				this.scrollY = this.scroll.y
 				this.$router.push({
 					name: 'TradeEdit-GoodsBuyer',
 					params: {
-						tid: tid,
+						order: { tid: tid },
 						pageBack: true,
 						pageTitle: '商品选购'
 					}

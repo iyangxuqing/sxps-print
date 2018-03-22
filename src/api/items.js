@@ -8,7 +8,7 @@ let cache_items_seller = null
 
 export function getItems(options) {
 	return new Promise(function(resolve, reject) {
-		if (options.onShelf == '1') {
+		if (options.onShelf) {
 			if (cache_items_buyer) {
 				resolve(cache_items_buyer)
 				return
@@ -22,10 +22,12 @@ export function getItems(options) {
 				let items = res.data.items
 				for (let i in items) {
 					for (let j in items[i].specs) {
+						items[i].specs[j].iid = Number(items[i].specs[j].iid)
+						items[i].specs[j].sid = Number(items[i].specs[j].sid)
 						items[i].specs[j].price = Number(items[i].specs[j].price).toFixed(2)
 					}
 				}
-				if (options.onShelf == '1') {
+				if (options.onShelf) {
 					cache_items_buyer = items
 				} else {
 					cache_items_seller = items

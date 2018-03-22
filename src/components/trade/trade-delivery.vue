@@ -110,7 +110,7 @@
 		},
 		methods: {
 			priceTap(order) {
-				if (order.iid == '0') {
+				if (!order.iid) {
 					this.$bus.$emit('editor-input', {
 						type: 'money',
 						title: '商品价格',
