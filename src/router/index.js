@@ -4,7 +4,7 @@ import Home from '@/components/home/home'
 import GoodsBuyer from '@/components/goods/goods-buyer'
 import TradeEdit from '@/components/trade/trade-edit'
 import TradeSum from '@/components/trade/trade-sum-print'
-import TradeSumPrint from '@/components/trade/trade-sum-print'
+import TradeEditWrapper from '@/components/trade/trade-edit-wrapper'
 import TradeDelivery from '@/components/trade/trade-delivery'
 
 Vue.use(Router)
@@ -36,9 +36,9 @@ export default new Router({
       component: TradeSum
     },
     {
-      path: '/trade-sum-print',
-      name: 'TradeSumPrint',
-      component: TradeSumPrint
+      path: '/trade-edit-wrapper',
+      name: 'TradeEditWrapper',
+      component: TradeEditWrapper
     },
     {
       path: '/trade-delivery',

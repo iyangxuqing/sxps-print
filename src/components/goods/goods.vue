@@ -5,7 +5,7 @@
 				<cates></cates>
 			</div>
 			<div class="items-container">
-				<items></items>	
+				<items></items>
 			</div>
 		</div>
 	</div>

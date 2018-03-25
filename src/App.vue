@@ -43,7 +43,7 @@
 			width: 300px
 		.content-container
 			position: relative
-			width: 800px
+			width: 900px
 			height: 100%
 			margin-left: 300px
 			@media print

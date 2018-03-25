@@ -4,11 +4,15 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { Message } from 'iview'
 import '@/common/js/bus'
 import '@/base/directive/v-money'
 import '@/common/stylus/index.styl'
+import 'iview/dist/styles/iview.css'
 
 Vue.config.productionTip = false
+
+Vue.prototype.$Message = Message
 
 /* eslint-disable no-new */
 new Vue({

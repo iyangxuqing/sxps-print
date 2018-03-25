@@ -34,12 +34,12 @@
 			}
 		},
 		created() {
-			this.$bus.$on('purchase-post-show', (options={}) => {
+			this.$bus.$on('purchase-post', (order) => {
 				this.show = true
-				this.id = options.id
-				this.tid = options.tid
-				this.image = options.image
-				this.message = options.message
+				this.id = order.id
+				this.tid = order.tid
+				this.image = order.image
+				this.message = order.message
 				this._setHeight()
 			})
 		},

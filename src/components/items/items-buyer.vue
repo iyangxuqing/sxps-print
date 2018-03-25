@@ -15,9 +15,9 @@
 
 	export default {
 		props: {
-			order: {
-				type: Object,
-				default: () => {}
+			tid: {
+				type: String,
+				default: ''
 			}
 		},
 	 	data() {
@@ -69,7 +69,7 @@
 		},
 		methods: {
 			itemTap(item) {
-				this.$bus.$emit('purchase-show', {
+				this.$bus.$emit('purchase', {
 					tid: this.tid,
 					iid: item.id
 				})

@@ -63,35 +63,31 @@
 			}
 		},
 		created() {
-			this.$bus.$on('purchase-show', (order) => {
-				this.order = order
+			this.$bus.$on('purchase', (order) => {
 				getItems({ onShelf: '1'}).then((items) => {
-					if (order.iid) {
-						let item = {}
-						let specsIndex = 0
-						for (let i in items) {
-							if (items[i].id == order.iid) {
-								/* 不污染全局的items */
-								item = JSON.parse(JSON.stringify(items[i]))
-								specsIndex = item.specs.length > 1 ? 1 : 0
-								for (let j in item.specs) {
-									if (item.specs[j].id == order.sid) {
-										specsIndex = j
-										break
-									}
+					let item = {}
+					let specsIndex = 0
+					for (let i in items) {
+						if (items[i].id == order.iid) {
+							/* 不污染全局的items */
+							item = JSON.parse(JSON.stringify(items[i]))
+							specsIndex = item.specs.length > 1 ? 1 : 0
+							for (let j in item.specs) {
+								if (item.specs[j].id == order.sid) {
+									specsIndex = j
+									break
 								}
-								item.specs[specsIndex].num = order.num
-								item.specs[specsIndex].message = order.message
-								break
 							}
+							item.specs[specsIndex].num = order.num
+							item.specs[specsIndex].message = order.message
+							break
 						}
-						this.item = item
-						this.specsIndex = specsIndex
-						this.show = true
-						this.$nextTick(() => {
-							this._setHeight()
-						})					
 					}
+					this.show = true
+					this.item = item
+					this.order = order
+					this.specsIndex = specsIndex
+					this._setHeight()
 				})
 			})
 		},
@@ -196,7 +192,7 @@
 						height += child.clientHeight
 					}
 					this.$refs.purchase.style.height = height + 'px'
-				})
+				}, 20)
 			}
 		}
 	}

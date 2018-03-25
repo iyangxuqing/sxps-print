@@ -17,7 +17,7 @@
 				menus: [{
 					id: 1,
 					title: '订单编辑',
-					path: '/trade-edit'
+					path: '/trade-edit-wrapper'
 				}, {
 					id: 2,
 					title: '订单发货',
