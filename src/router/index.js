@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Home from '@/components/home/home'
 import GoodsBuyer from '@/components/goods/goods-buyer'
 import TradeEdit from '@/components/trade/trade-edit'
-import TradeSum from '@/components/trade/trade-sum-print'
 import TradeEditWrapper from '@/components/trade/trade-edit-wrapper'
 import TradeDelivery from '@/components/trade/trade-delivery'
 
@@ -29,11 +28,6 @@ export default new Router({
       path: '/trade-edit/goods-buyer',
       name: 'TradeEdit-GoodsBuyer',
       component: GoodsBuyer
-    },
-    {
-      path: '/trade-sum',
-      name: 'TradeSum',
-      component: TradeSum
     },
     {
       path: '/trade-edit-wrapper',
